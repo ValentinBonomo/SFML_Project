@@ -13,7 +13,10 @@ public:
     const int getDamage() { return m_damage; }
     const bool getIsAlive() { return m_isAlive; }
     void enemyGetBetter(GameManager& gameManager);
-    void takeDamage(int damage);
+    void takeDamage(int damage, Player& player);
+    void resetHp() { m_currentHp = m_maxHp; }
+    void calculateEnemyStats(GameManager& gameManager);
+    void setIsAlive(bool alive) { m_isAlive = alive; }
 
 private:
     sf::Sprite m_sprite;
@@ -23,6 +26,5 @@ private:
     int m_damage;
     GameManager& m_gameManager;
     bool m_isAlive;
-
-    void calculateEnemyStats(GameManager& gameManager);
 };
+

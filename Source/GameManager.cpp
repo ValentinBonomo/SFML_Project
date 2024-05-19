@@ -7,11 +7,7 @@ GameManager::GameManager()
 {
 	m_amountOfEnemieskilled = 0;
 	m_gameOver = false;
-};
-
-void GameManager::isGameOver(float currentHp)
-{
-	m_gameOver = true;
+	m_purcentageOfStats = 1.05f;
 }
 
 void GameManager::increaseAmountOfEnemiesKilled()
@@ -20,9 +16,8 @@ void GameManager::increaseAmountOfEnemiesKilled()
 	m_player.resetHp();
 }
 
-void GameManager::drawingEverything(sf::RenderWindow& window)
+void GameManager::increaseGold()
 {
-	window.clear();
-	window.draw(m_player.getSprite());
-	window.display();
+	gold += 20 * m_purcentageOfStats;
+	m_purcentageOfStats += .0005f;
 }
