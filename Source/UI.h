@@ -7,15 +7,12 @@
 class UI {
 public:
     UI();
-
-    void drawLevelText(sf::RenderWindow& window);
-
     void drawHPButton(sf::RenderWindow& window);
     void drawDMGButton(sf::RenderWindow& window);
     bool isHPButtonClicked(sf::RenderWindow& window, Player& player);
     bool isDMGButtonClicked(sf::RenderWindow& window, Player& player);
-    void setHPButtonPosition(float windowWidth, float windowHeight);
-    void setDMGButtonPosition(float windowWidth, float windowHeight);
+    void setHPButtonPosition(float windowWidth, float windowHeight, Player& player);
+    void setDMGButtonPosition(float windowWidth, float windowHeight, Player& player);
 
     void setHPTextPosition(Player& player);
     void setEnemyHPTextPosition(Enemy& enemy);
@@ -27,6 +24,7 @@ public:
 
     void setDamageTextPosition(Player& player);
     void drawDamage(sf::RenderWindow& window, Player& player);
+    
 
 private:
     sf::Font m_font;

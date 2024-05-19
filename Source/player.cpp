@@ -8,8 +8,8 @@ Player::Player()
     m_damage = 10;
     upgradeCostHP = 50;
     upgradeCostDMG = 50;
-    hpIncreaseAmount = 10;
-    dmgIncreaseAmount = 5;
+    hpIncreaseAmount = 5;
+    dmgIncreaseAmount = 2;
     m_player_texture.loadFromFile("D:/Documents/GitHub/ConsoleApplication1/Source/Player.png");
     m_sprite.setTexture(m_player_texture);
     isAlive = true;

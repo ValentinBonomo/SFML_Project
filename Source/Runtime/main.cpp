@@ -8,35 +8,44 @@
 #include <vector>
 
 int main() {
+    // Création du joueur
     Player player;
 
+    // Création de la fenêtre
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Idle Game");
     sf::Vector2u windowSize = window.getSize();
     float windowWidth = static_cast<float>(windowSize.x);
     float windowHeight = static_cast<float>(windowSize.y);
     player.setPostionAndScale(windowWidth, windowHeight);
 
+    // Initialisation du GameManager
     GameManager gameManager;
+
+    // Initialisation de la liste des ennemis
     std::vector<Enemy*> enemyList;
     enemyList.push_back(new Enemy(gameManager));
     enemyList[0]->setPostionAndScale(windowWidth, windowHeight);
 
+    // Initialisation de l'interface utilisateur (UI)
     UI ui;
     ui.setHPTextPosition(player);
     ui.setEnemyHPTextPosition(*enemyList[0]);
     ui.setGoldTextPosition(gameManager, windowWidth);
-    ui.setHPButtonPosition(windowWidth, windowHeight);
-    ui.setDMGButtonPosition(windowWidth, windowHeight);
+    ui.setHPButtonPosition(windowWidth, windowHeight, player);
+    ui.setDMGButtonPosition(windowWidth, windowHeight, player);
     ui.setDamageTextPosition(player);
 
+    // Initialisation des horloges pour le temps écoulé
     sf::Clock clock;
     sf::Clock enemyTimer;
     float deltaTime = 0.0f;
     float damageTimer = 0.0f;
 
+    // Variables pour la gestion des clics de souris
     bool mousePressed = false;
     bool canEnemySpawn = false;
 
+    // Boucle principale du jeu
     while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         sf::Event event;
@@ -52,9 +61,7 @@ int main() {
                             gameManager.removeGold(upgradeCost);
                             ui.setHPTextPosition(player);
                             ui.setGoldTextPosition(gameManager, windowWidth);
-                            ui.setHPButtonPosition(windowWidth, windowHeight);
-                        } else {
-                            std::cout << "Not enough gold to upgrade HP" << std::endl;
+                            ui.setHPButtonPosition(windowWidth, windowHeight, player);
                         }
                         mousePressed = true;
                     } else if (ui.isDMGButtonClicked(window, player)) {
@@ -64,9 +71,7 @@ int main() {
                             gameManager.removeGold(upgradeCost);
                             ui.setDamageTextPosition(player);
                             ui.setGoldTextPosition(gameManager, windowWidth);
-                            ui.setDMGButtonPosition(windowWidth, windowHeight);
-                        } else {
-                            std::cout << "Not enough gold to upgrade damage" << std::endl;
+                            ui.setDMGButtonPosition(windowWidth, windowHeight, player);
                         }
                         mousePressed = true;
                     }
@@ -76,6 +81,7 @@ int main() {
             }
         }
 
+        // Gestion des dégâts
         damageTimer += deltaTime;
         if (damageTimer >= 1.0f) {
             if (!enemyList.empty()) {
@@ -109,6 +115,7 @@ int main() {
             }
         }
 
+        // Génération des ennemis
         if (enemyTimer.getElapsedTime().asSeconds() >= 2.0f && canEnemySpawn) {
             enemyList.push_back(new Enemy(gameManager));
             enemyList.back()->setPostionAndScale(windowWidth, windowHeight);
@@ -117,21 +124,22 @@ int main() {
             canEnemySpawn = false;
         }
 
+        // Affichage de la fenêtre
         window.clear();
         window.draw(player.getSprite());
         if (!enemyList.empty()) {
             window.draw(enemyList[0]->getSprite());
             ui.drawEnemyHP(window, *enemyList[0]);
-            std::cout << "Enemy HP: " << enemyList[0]->getCurrentHP() << std::endl;
         }
         ui.drawHP(window, player);
         ui.drawHPButton(window);
         ui.drawDMGButton(window);
-        ui.drawHP(window, player);
         ui.drawGold(window, gameManager);
         ui.drawDamage(window, player);
         window.display();
     }
+
+    // Nettoyage de la mémoire
     for (Enemy* enemy : enemyList) {
         delete enemy;
     }
@@ -139,4 +147,3 @@ int main() {
 
     return 0;
 }
-
